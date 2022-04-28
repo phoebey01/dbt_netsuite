@@ -40,41 +40,41 @@ models:
       Additionally, we add in a couple of extra fields that will help us in our final balance sheet 
       and income statement queries.
 
-  - name: netsuite__balance_sheet
-    description: >
-      The balance sheet query uses the transactions_with_converted_amount
-      transformation to recreate all lines necessary for the balance sheet.
-      Transactions that are not balance sheet transactions are categorized as
-      either Retained Earnings or Net Income.  The Cumulative Translation
-      Adjustment total, which in most cases does not have transactions
-      associated with it, is calculated manually in the second part of the query.
-    columns:
-    - name: accounting_period_id
-      description: The unique identifier of the accounting period.
-    - name: accounting_period_ending
-      description: End date of the accounting period
-    - name: accounting_period_full_name
-      description: Accounting periods full name.
-    - name: accounting_period_name
-      description: Name of the accounting period.
-    - name: is_accounting_period_adjustment
-      description: Yes/No field, indicating whether or not the selecting accounting period is an adjustment period.
-    - name: is_accounting_period_closed
-      description: Yes/No field, indicating whether or not the selecting accounting period is closed.
-    - name: account_category
-      description: Category of the account.  Options include Asset, Liability, Equity, Expense or Income.
-    - name: account_name
-      description: Name of the account.
-    - name: account_type_name
-      description: The accounts type name.
-    - name: account_id
-      description: The unique identifier of the account.
-    - name: account_number
-      description: Account number associated with the account.
-    - name: converted_amount
-      description: Transaction amount, converted into the primary subsidiary's default currency.
-    - name: balance_sheet_sort_helper
-      description: Helper column for sorting balance sheet records.
+  # - name: netsuite__balance_sheet
+  #   description: >
+  #     The balance sheet query uses the transactions_with_converted_amount
+  #     transformation to recreate all lines necessary for the balance sheet.
+  #     Transactions that are not balance sheet transactions are categorized as
+  #     either Retained Earnings or Net Income.  The Cumulative Translation
+  #     Adjustment total, which in most cases does not have transactions
+  #     associated with it, is calculated manually in the second part of the query.
+  #   columns:
+  #   - name: accounting_period_id
+  #     description: The unique identifier of the accounting period.
+  #   - name: accounting_period_ending
+  #     description: End date of the accounting period
+  #   - name: accounting_period_full_name
+  #     description: Accounting periods full name.
+  #   - name: accounting_period_name
+  #     description: Name of the accounting period.
+  #   - name: is_accounting_period_adjustment
+  #     description: Yes/No field, indicating whether or not the selecting accounting period is an adjustment period.
+  #   - name: is_accounting_period_closed
+  #     description: Yes/No field, indicating whether or not the selecting accounting period is closed.
+  #   - name: account_category
+  #     description: Category of the account.  Options include Asset, Liability, Equity, Expense or Income.
+  #   - name: account_name
+  #     description: Name of the account.
+  #   - name: account_type_name
+  #     description: The accounts type name.
+  #   - name: account_id
+  #     description: The unique identifier of the account.
+  #   - name: account_number
+  #     description: Account number associated with the account.
+  #   - name: converted_amount
+  #     description: Transaction amount, converted into the primary subsidiary's default currency.
+  #   - name: balance_sheet_sort_helper
+  #     description: Helper column for sorting balance sheet records.
 
   - name: netsuite__income_statement
     description: >
@@ -123,106 +123,106 @@ models:
     - name: subsidiary_name
       description: Name of the subsidiary.
 
-  - name: netsuite__transaction_details
-    description: >
-      This table uses Netsuite's core table, transaction_lines, and joins a handful of 
-      other tables to add more detail to those line items.  For all transactions, you are 
-      able to see the associated accounting period, account and subsidiary.  Where applicable, 
-      you can also see information about the customer, location, item, vendor, and department.
-    columns:
-    - name: transaction_line_id
-      description: Netsuite internal transaction line ID.
-    - name: transaction_memo
-      description: Memo associated with the transaction line.
-    - name: is_transaction_non_posting
-      description: Yes/No field, indicating whether or not the transaction line is non-posting.
-    - name: transaction_id
-      description: Netsuite internal transaction ID.
-    - name: transaction_status
-      description: Status of the transaction (Closed, Pending Billing, Billing, etc.).
-    - name: transaction_date
-      description: Timestamp of the date which the transaction occurred.
-    - name: transaction_due_date
-      description: Timestamp of the date which the transaction is due.
-    - name: transaction_type
-      description: Type identifier of the transaction.
-    - name: is_transaction_intercompany
-      description: Yes/No field, indicating whether or not the transaction is an intercompany transaction or an advanced intercompany transaction.
-    - name: accounting_period_ending
-      description: End date of the accounting period.
-    - name: accounting_period_full_name
-      description: Full name of the accounting period.
-    - name: accounting_period_name
-      description: Name of the accounting period.
-    - name: is_accounting_period_adjustment
-      description: Yes/No field, indicating whether or not the selecting accounting period is an adjustment period.
-    - name: is_accounting_period_closed
-      description: Yes/No field, indicating whether or not the selecting accounting period is closed.
-    - name: account_name
-      description: Name of the account.
-    - name: account_type_name
-      description: The accounts type name.
-    - name: account_id
-      description: Unique identifier of the account.
-    - name: account_number
-      description: Account number associated with the account.
-    - name: is_account_leftside
-      description: Yes/No field indicating whether or not the account is leftside.
-    - name: is_accounts_payable
-      description: Yes/No field indicating whether or not the account type name includes 'accounts payable'.
-    - name: is_accounts_receivable
-      description: Yes/No field indicating whether or not the account type name includes 'accounts receivable'.
-    - name: is_account_intercompany
-      description: Yes/No field indicating whether or not the account type name includes 'intercompany'.
-    - name: parent_account_name
-      description: Name of the parent account, if parent account relationship exists.  Otherwise, the name of the account.
-    - name: is_income_account
-      description: Yes/No field indicating whether or not the account is an income account.
-    - name: is_expense_account
-      description: Yes/No field indicating whether or not the account is an expense account.
-    - name: company_name
-      description: Name of the company.
-    - name: customer_city
-      description: City where the customer is located.
-    - name: customer_state
-      description: State where the customer is located.
-    - name: customer_zipcode
-      description: Zip Code of the customer.
-    - name: customer_country
-      description: Country where the customer is located.
-    - name: customer_date_first_order
-      description: Date customer placed first order.
-    - name: customer_external_id
-      description: The unique identifier of the external customer reference.
-    - name: class_full_name
-      description: Full name of the class.
-    - name: item_name
-      description: Name of the item.
-    - name: item_type_name
-      description: Type name of the item.
-    - name: sales_description
-      description: Description of the item for sales purposes.
-    - name: location_name
-      description: Name of the location.
-    - name: location_city
-      description: City used as a location reference.
-    - name: location_country
-      description: Country used as a location reference.
-    - name: vendor_type_name
-      description: Type name of the vendor.
-    - name: vendor_name
-      description: Name of the vendor.
-    - name: vendor_create_date
-      description: Date vendor was created.
-    - name: currency_name
-      description: Name of the currency used.
-    - name: currency_symbol
-      description: Symbol used to identify the currency type.
-    - name: department_name
-      description: Name of the department.
-    - name: subsidiary_name
-      description: Name of the subsidiary.
-    - name: converted_amount
-      description: Transaction amount, converted into the primary subsidiary's default currency.
-    - name: transaction_amount
-      description: Total amount of the transaction line.
+  # - name: netsuite__transaction_details
+  #   description: >
+  #     This table uses Netsuite's core table, transaction_lines, and joins a handful of 
+  #     other tables to add more detail to those line items.  For all transactions, you are 
+  #     able to see the associated accounting period, account and subsidiary.  Where applicable, 
+  #     you can also see information about the customer, location, item, vendor, and department.
+  #   columns:
+  #   - name: transaction_line_id
+  #     description: Netsuite internal transaction line ID.
+  #   - name: transaction_memo
+  #     description: Memo associated with the transaction line.
+  #   - name: is_transaction_non_posting
+  #     description: Yes/No field, indicating whether or not the transaction line is non-posting.
+  #   - name: transaction_id
+  #     description: Netsuite internal transaction ID.
+  #   - name: transaction_status
+  #     description: Status of the transaction (Closed, Pending Billing, Billing, etc.).
+  #   - name: transaction_date
+  #     description: Timestamp of the date which the transaction occurred.
+  #   - name: transaction_due_date
+  #     description: Timestamp of the date which the transaction is due.
+  #   - name: transaction_type
+  #     description: Type identifier of the transaction.
+  #   - name: is_transaction_intercompany
+  #     description: Yes/No field, indicating whether or not the transaction is an intercompany transaction or an advanced intercompany transaction.
+  #   - name: accounting_period_ending
+  #     description: End date of the accounting period.
+  #   - name: accounting_period_full_name
+  #     description: Full name of the accounting period.
+  #   - name: accounting_period_name
+  #     description: Name of the accounting period.
+  #   - name: is_accounting_period_adjustment
+  #     description: Yes/No field, indicating whether or not the selecting accounting period is an adjustment period.
+  #   - name: is_accounting_period_closed
+  #     description: Yes/No field, indicating whether or not the selecting accounting period is closed.
+  #   - name: account_name
+  #     description: Name of the account.
+  #   - name: account_type_name
+  #     description: The accounts type name.
+  #   - name: account_id
+  #     description: Unique identifier of the account.
+  #   - name: account_number
+  #     description: Account number associated with the account.
+  #   - name: is_account_leftside
+  #     description: Yes/No field indicating whether or not the account is leftside.
+  #   - name: is_accounts_payable
+  #     description: Yes/No field indicating whether or not the account type name includes 'accounts payable'.
+  #   - name: is_accounts_receivable
+  #     description: Yes/No field indicating whether or not the account type name includes 'accounts receivable'.
+  #   - name: is_account_intercompany
+  #     description: Yes/No field indicating whether or not the account type name includes 'intercompany'.
+  #   - name: parent_account_name
+  #     description: Name of the parent account, if parent account relationship exists.  Otherwise, the name of the account.
+  #   - name: is_income_account
+  #     description: Yes/No field indicating whether or not the account is an income account.
+  #   - name: is_expense_account
+  #     description: Yes/No field indicating whether or not the account is an expense account.
+  #   - name: company_name
+  #     description: Name of the company.
+  #   - name: customer_city
+  #     description: City where the customer is located.
+  #   - name: customer_state
+  #     description: State where the customer is located.
+  #   - name: customer_zipcode
+  #     description: Zip Code of the customer.
+  #   - name: customer_country
+  #     description: Country where the customer is located.
+  #   - name: customer_date_first_order
+  #     description: Date customer placed first order.
+  #   - name: customer_external_id
+  #     description: The unique identifier of the external customer reference.
+  #   - name: class_full_name
+  #     description: Full name of the class.
+  #   - name: item_name
+  #     description: Name of the item.
+  #   - name: item_type_name
+  #     description: Type name of the item.
+  #   - name: sales_description
+  #     description: Description of the item for sales purposes.
+  #   - name: location_name
+  #     description: Name of the location.
+  #   - name: location_city
+  #     description: City used as a location reference.
+  #   - name: location_country
+  #     description: Country used as a location reference.
+  #   - name: vendor_type_name
+  #     description: Type name of the vendor.
+  #   - name: vendor_name
+  #     description: Name of the vendor.
+  #   - name: vendor_create_date
+  #     description: Date vendor was created.
+  #   - name: currency_name
+  #     description: Name of the currency used.
+  #   - name: currency_symbol
+  #     description: Symbol used to identify the currency type.
+  #   - name: department_name
+  #     description: Name of the department.
+  #   - name: subsidiary_name
+  #     description: Name of the subsidiary.
+  #   - name: converted_amount
+  #     description: Transaction amount, converted into the primary subsidiary's default currency.
+  #   - name: transaction_amount
+  #     description: Total amount of the transaction line.

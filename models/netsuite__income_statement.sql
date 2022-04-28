@@ -31,10 +31,10 @@ transaction_lines as (
     from {{ var('transaction_lines') }}
 ),
 
-classes as (
-    select * 
-    from {{ var('classes') }}
-),
+-- classes as (
+--     select * 
+--     from {{ var('classes') }}
+-- ),
 
 locations as (
     select * 
@@ -50,15 +50,15 @@ income_statement as (
     select
         reporting_accounting_periods.accounting_period_id as accounting_period_id,
         reporting_accounting_periods.ending_at as accounting_period_ending,
-        reporting_accounting_periods.full_name as accounting_period_full_name,
+        -- reporting_accounting_periods.full_name as accounting_period_full_name,
         reporting_accounting_periods.name as accounting_period_name,
-        lower(reporting_accounting_periods.is_adjustment) = 'yes' as is_accounting_period_adjustment,
-        lower(reporting_accounting_periods.closed) = 'yes' as is_accounting_period_closed,
+        reporting_accounting_periods.is_adjustment as is_accounting_period_adjustment,
+        reporting_accounting_periods.is_closed as is_accounting_period_closed,
         accounts.name as account_name,
         accounts.type_name as account_type_name,
         accounts.account_id as account_id,
-        accounts.account_number,
-        subsidiaries.subsidiary_id,
+        -- accounts.account_number,
+        subsidiaries.subsdiary_id, -- TODO: fix typo to `subsidiary_id` once column name is fixed
         subsidiaries.full_name as subsidiary_full_name,
         subsidiaries.name as subsidiary_name,
 
@@ -69,8 +69,8 @@ income_statement as (
 
         {% endif %}
 
-        {{ dbt_utils.concat(['accounts.account_number',"'-'", 'accounts.name']) }} as account_number_and_name,
-        classes.full_name as class_full_name,
+        -- {{ dbt_utils.concat(['accounts.account_number',"'-'", 'accounts.name']) }} as account_number_and_name,
+        -- classes.full_name as class_full_name,
 
         --The below script allows for classes table pass through columns.
         {% if var('classes_pass_through_columns') %}
@@ -113,8 +113,8 @@ income_statement as (
         on transaction_lines.transaction_line_id = transactions_with_converted_amounts.transaction_line_id
             and transaction_lines.transaction_id = transactions_with_converted_amounts.transaction_id
 
-    left join classes 
-        on classes.class_id = transaction_lines.class_id
+    -- left join classes 
+    --     on classes.class_id = transaction_lines.class_id
 
     left join locations
         on locations.location_id = transaction_lines.location_id
@@ -126,8 +126,9 @@ income_statement as (
     join accounting_periods as reporting_accounting_periods 
         on reporting_accounting_periods.accounting_period_id = transactions_with_converted_amounts.reporting_accounting_period_id
     
+    -- TODO: fix typo to `subsidiary_id` once column name is fixed
     join subsidiaries
-        on transactions_with_converted_amounts.subsidiary_id = subsidiaries.subsidiary_id
+        on transactions_with_converted_amounts.subsidiary_id = subsidiaries.subsdiary_id
 
     --Below is only used if income statement transaction detail columns are specified dbt_project.yml file.
     {% if var('income_statement_transaction_detail_columns') != []%}
@@ -136,8 +137,9 @@ income_statement as (
         and transaction_details.transaction_line_id = transactions_with_converted_amounts.transaction_line_id
     {% endif %}
 
-    where reporting_accounting_periods.fiscal_calendar_id  = (select fiscal_calendar_id from subsidiaries where parent_id is null)
-        and transactions_with_converted_amounts.transaction_accounting_period_id = transactions_with_converted_amounts.reporting_accounting_period_id
+    where 
+    -- reporting_accounting_periods.fiscal_calendar_id  = (select fiscal_calendar_id from subsidiaries where parent_id is null) and 
+    transactions_with_converted_amounts.transaction_accounting_period_id = transactions_with_converted_amounts.reporting_accounting_period_id
         and transactions_with_converted_amounts.is_income_statement
 )
 
