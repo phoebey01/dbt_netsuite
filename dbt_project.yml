@@ -1,7 +1,7 @@
 config-version: 2
-name: 'netsuite'
-version: '0.5.0'
-profile: 'integration'
+name: "netsuite"
+version: "0.5.0"
+profile: "integration"
 require-dbt-version: [">=1.0.0", "<2.0.0"]
 models:
   netsuite:
@@ -11,23 +11,23 @@ models:
       materialized: ephemeral
 vars:
   netsuite:
-    accounting_books: "{{ ref('stg_netsuite__accounting_books') }}"
-    accounting_periods: "{{ ref('stg_netsuite__accounting_periods') }}"
-    accounts: "{{ ref('stg_netsuite__accounts') }}"
-    classes: "{{ ref('stg_netsuite__classes') }}"
-    consolidated_exchange_rates: "{{ ref('stg_netsuite__consolidated_exchange_rates') }}"
-    currencies: "{{ ref('stg_netsuite__currencies') }}"
-    customers: "{{ ref('stg_netsuite__customers') }}"
-    departments: "{{ ref('stg_netsuite__departments') }}"
-    expense_accounts: "{{ ref('stg_netsuite__expense_accounts') }}"
-    income_accounts: "{{ ref('stg_netsuite__income_accounts') }}"
-    items: "{{ ref('stg_netsuite__items') }}"
-    locations: "{{ ref('stg_netsuite__locations') }}"
-    subsidiaries: "{{ ref('stg_netsuite__subsidiaries') }}"
-    transaction_lines: "{{ ref('stg_netsuite__transaction_lines') }}"
-    transactions: "{{ ref('stg_netsuite__transactions') }}"
-    vendor_types: "{{ ref('stg_netsuite__vendor_types') }}"
-    vendors: "{{ ref('stg_netsuite__vendors') }}"
+    accounting_books: "{{ ref('netsuite_accounting_books') }}"
+    accounting_periods: "{{ ref('netsuite_accounting_periods') }}"
+    accounts: "{{ ref('netsuite_accounts') }}"
+    classes: "{{ ref('netsuite_classes') }}"
+    consolidated_exchange_rates: "{{ ref('netsuite_consolidated_exchange_rates') }}"
+    currencies: "{{ ref('netsuite_currencies') }}"
+    customers: "{{ ref('netsuite_customers') }}"
+    departments: "{{ ref('netsuite_departments') }}"
+    expense_accounts: "{{ ref('netsuite_expense_accounts') }}"
+    income_accounts: "{{ ref('netsuite_income_accounts') }}"
+    items: "{{ ref('netsuite_items') }}"
+    locations: "{{ ref('netsuite_locations') }}"
+    subsidiaries: "{{ ref('netsuite_subsidiaries') }}"
+    transaction_lines: "{{ ref('netsuite_transaction_lines') }}"
+    transactions: "{{ ref('netsuite_transactions') }}"
+    vendor_types: "{{ ref('netsuite_vendor_types') }}"
+    vendors: "{{ ref('netsuite_vendors') }}"
   accounts_pass_through_columns: []
   classes_pass_through_columns: []
   departments_pass_through_columns: []
@@ -36,6 +36,6 @@ vars:
   balance_sheet_transaction_detail_columns: []
   income_statement_transaction_detail_columns: []
 clean-targets:
-- target
-- dbt_modules
-- dbt_packages
+  - target
+  - dbt_modules
+  - dbt_packages
